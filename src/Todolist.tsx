@@ -1,7 +1,7 @@
 import { FilterValues } from './App'
 
 export type Task = {
-  id: number
+  id: string
   title: string
   isDone: boolean
 }

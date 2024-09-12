@@ -1,14 +1,15 @@
 import './App.css'
 import { Task, Todolist } from './Todolist'
 import { useState } from 'react'
+import { v1 } from 'uuid'
 
 export type FilterValues = 'all' | 'completed' | 'active'
 
 const App = () => {
   let [tasks, setTasks] = useState<Task[]>([
-    { id: 1, title: 'HTML&CSS', isDone: true },
-    { id: 2, title: 'JS', isDone: true },
-    { id: 4, title: 'Redux', isDone: false },
+    { id: v1(), title: 'HTML&CSS', isDone: true },
+    { id: v1(), title: 'JS', isDone: true },
+    { id: v1(), title: 'ReactJS', isDone: false },
   ])
   // храним значение фильтра тут и его надо в дочке изменять поэтому changeFilterTodo будет принимать: value
   const [filter, setFilter] = useState<FilterValues>('all')
