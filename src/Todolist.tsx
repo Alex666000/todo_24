@@ -1,5 +1,5 @@
 import { FilterValues } from './App'
-import { useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useState } from 'react'
 
 export type Task = {
   id: string
@@ -26,21 +26,21 @@ export const Todolist = ({
   // инпут сделали контролируемым
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
-  const removeTaskFromTodo = (taskId: string) => onRemoveTaskClick(taskId)
-
   const changeTodoFilter = (filter: FilterValues) => onChangeFilterClick(filter)
 
-  const addNewTaskTitle = () => {
+  const addNewTask = () => {
     onAddTaskClick(newTaskTitle)
     setNewTaskTitle('')
   }
 
-  const onAddNewTaskTitleEnter = (e) => {
+  const onAddNewTaskTitleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onAddTaskClick(newTaskTitle)
       setNewTaskTitle('')
     }
   }
+  const onTaskTitleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setNewTaskTitle(e.currentTarget.value)
 
   return (
     <div {...rest}>
@@ -48,19 +48,23 @@ export const Todolist = ({
       <div>
         <input
           value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.currentTarget.value)}
+          onChange={onTaskTitleChange}
           onKeyDown={onAddNewTaskTitleEnter}
         />
-        <button onClick={addNewTaskTitle}>+</button>
+        <button onClick={addNewTask}>+</button>
       </div>
       <ul>
-        {tasks.map((t) => (
-          <li key={t.id}>
-            <input type="checkbox" checked={t.isDone} />
-            <span>{t.title}</span>
-            <button onClick={() => removeTaskFromTodo(t.id)}>X</button>
-          </li>
-        ))}
+        {tasks.map((t) => {
+          const removeTaskTodo = () => onRemoveTaskClick(t.id)
+
+          return (
+            <li key={t.id}>
+              <input type="checkbox" checked={t.isDone} />
+              <span>{t.title}</span>
+              <button onClick={removeTaskTodo}>X</button>
+            </li>
+          )
+        })}
       </ul>
       <div>
         <button onClick={() => changeTodoFilter('all')}>All</button>
