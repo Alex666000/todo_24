@@ -13,6 +13,7 @@ type Props = {
   onRemoveTaskClick: (taskId: string) => void
   onAddTaskClick: (newTaskTitle: string) => void
   onChangeFilterClick: (value: FilterValues) => void
+  onTaskStatusChange: (taskId: string, isDone: boolean) => void
 }
 
 export const Todolist = ({
@@ -21,6 +22,7 @@ export const Todolist = ({
   onRemoveTaskClick,
   onAddTaskClick,
   onChangeFilterClick,
+  onTaskStatusChange,
   ...rest
 }: Props) => {
   // инпут сделали контролируемым
@@ -29,8 +31,10 @@ export const Todolist = ({
   const changeTodoFilter = (filter: FilterValues) => onChangeFilterClick(filter)
 
   const addNewTask = () => {
-    onAddTaskClick(newTaskTitle)
-    setNewTaskTitle('')
+    if (newTaskTitle.trim() !== '') {
+      onAddTaskClick(newTaskTitle.trim())
+      setNewTaskTitle('')
+    }
   }
 
   const onAddNewTaskTitleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -57,9 +61,13 @@ export const Todolist = ({
         {tasks.map((t) => {
           const removeTaskTodo = () => onRemoveTaskClick(t.id)
 
+          const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
+            onTaskStatusChange(t.id, e.currentTarget.checked)
+          }
+
           return (
             <li key={t.id}>
-              <input type="checkbox" checked={t.isDone} />
+              <input type="checkbox" checked={t.isDone} onChange={changeTaskStatus} />
               <span>{t.title}</span>
               <button onClick={removeTaskTodo}>X</button>
             </li>

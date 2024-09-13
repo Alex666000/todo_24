@@ -12,7 +12,6 @@ const App = () => {
     { id: v1(), title: 'ReactJS', isDone: false },
   ])
 
-  console.log(tasks)
   const [filter, setFilter] = useState<FilterValues>('all')
 
   const removeTask = (taskId: string) => {
@@ -27,6 +26,15 @@ const App = () => {
 
   const changeFilterTodo = (value: FilterValues) => {
     setFilter(value)
+  }
+
+  const changeTaskStatus = (taskId: string, isDone: boolean) => {
+    const task = tasks.find((t) => t.id === taskId)
+    if (task) {
+      task.isDone = isDone
+    }
+    // сидят теперь все те же самые таски но в одной произошли изменения
+    setTasks([...tasks])
   }
 
   let tasksForTodolist = tasks
@@ -47,6 +55,7 @@ const App = () => {
           onRemoveTaskClick={removeTask}
           onAddTaskClick={addTask}
           onChangeFilterClick={changeFilterTodo}
+          onTaskStatusChange={changeTaskStatus}
         />
       </div>
     </div>
