@@ -28,13 +28,18 @@ const App = () => {
     setFilter(value)
   }
 
-  const changeTaskStatus = (taskId: string, isDone: boolean) => {
-    const task = tasks.find((t) => t.id === taskId)
-    if (task) {
-      task.isDone = isDone
-    }
-    // сидят теперь все те же самые таски но в одной произошли изменения
-    setTasks([...tasks])
+  // для изменения стейта всегда используй map() удобнее чем find
+  const changeTaskStatus = (taskId: string, newTaskStatus: boolean) => {
+    setTasks((prev) =>
+      prev.map((task) => {
+        // всегда условие
+        if (task.id === taskId) {
+          return { ...task, isDone: newTaskStatus }
+        } else {
+          return { ...task }
+        }
+      })
+    )
   }
 
   let tasksForTodolist = tasks
@@ -51,6 +56,7 @@ const App = () => {
       <div className="App">
         <Todolist
           title="What to learn"
+          filter={filter}
           tasks={tasksForTodolist}
           onRemoveTaskClick={removeTask}
           onAddTaskClick={addTask}
