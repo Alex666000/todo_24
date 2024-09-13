@@ -29,7 +29,7 @@ export const Todolist = ({
 }: Props) => {
   // инпут сделали контролируемым
   const [newTaskTitle, setNewTaskTitle] = useState('')
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<null | string>('')
 
   const changeTodoFilter = (filter: FilterValues) => onChangeFilterClick(filter)
 
@@ -38,6 +38,7 @@ export const Todolist = ({
       onAddTaskClick(newTaskTitle.trim())
       setNewTaskTitle('')
     }
+    // если поле добавления таски пустое
     setError('Заголовок обязателен')
   }
 
